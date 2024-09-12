@@ -894,21 +894,21 @@ fn write_deserialize_field<W: Write>(
                 FieldModifier::Optional => {
                     write!(
                         writer,
-                        "map_.next_value::<::std::option::Option<{}>>()?.map(|x| x as i32)",
+                        "map_.next_value::<::std::option::Option<{}>>()?.map(|v| v.into())",
                         resolver.rust_type(path)
                     )?;
                 }
                 FieldModifier::Repeated => {
                     write!(
                         writer,
-                        "Some(map_.next_value::<Vec<{}>>()?.into_iter().map(|x| x as i32).collect())",
+                        "Some(map_.next_value::<Vec<{}>>()?.into_iter().map(|v| v.into()).collect())",
                         resolver.rust_type(path)
                     )?;
                 }
                 _ => {
                     write!(
                         writer,
-                        "Some(map_.next_value::<{}>()? as i32)",
+                        "Some(map_.next_value::<{}>()?.into())",
                         resolver.rust_type(path)
                     )?;
                 }
